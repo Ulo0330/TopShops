@@ -1,1 +1,48 @@
-
+"Wireless Earbuds Pro" 129.99 "SoundMagic" "Audio" "Back to School" 15000 500
+"4K Ultra HD Smart TV" 599.99 "ViewPlus" "Television" "Black Friday" 8000 1200
+"Bluetooth Speaker X" 79.99 "BeatBlaster" "Audio" "Summer Sale" 12000 800
+"Smartwatch Series 5" 199.99 "WristTech" "Wearable" "Holiday Sale" 9500 600
+"Noise-Canceling Headphones" 149.99 "QuietTune" "Audio" "Cyber Monday" 11000 700
+"Portable Power Bank 20000mAh" 39.99 "ChargeUp" "Accessory" "Travel Season" 18000 900
+"Wireless Charging Pad" 29.99 "JuiceMat" "Accessory" "Tech Expo" 14000 650
+"1080p Home Security Camera" 89.99 "SecureHome" "Security" "Home Improvement" 7500 400
+"VR Headset Deluxe" 299.99 "VirtualPlay" "Gaming" "Gaming Convention" 5000 300
+"Smart Home Hub" 99.99 "HomeSync" "Smart Home" "New Year Sale" 13000 550
+"Fitness Tracker Plus" 69.99 "FitLife" "Wearable" "Health Week" 16000 750
+"Laptop Cooling Pad" 25.99 "CoolTech" "Accessory" "Summer Sale" 9000 500
+"USB-C Hub Multiport Adapter" 49.99 "ConnectAll" "Accessory" "Back to School" 11000 600
+"Digital Photo Frame 10\"" 89.99 "MemorEase" "Display" "Mother's Day" 7000 350
+"Wireless Mouse Ergonomic" 29.99 "ClickComfort" "Peripheral" "Office Supplies Sale" 15000 800
+"Mechanical Gaming Keyboard" 129.99 "KeyMaster" "Peripheral" "E-Sports Tournament" 6000 400
+"External SSD 1TB" 149.99 "SpeedStor" "Storage" "Data Backup Month" 8500 450
+"Smart Light Bulb 4-Pack" 49.99 "BrightHome" "Smart Home" "Home Automation Week" 10000 500
+"4K Action Camera" 199.99 "AdventureCam" "Camera" "Outdoor Expo" 5500 300
+"E-Reader 7\"" 129.99 "ReadEase" "Tablet" "Book Fair" 9000 400
+"Bluetooth Car Adapter" 24.99 "AutoTune" "Accessory" "Car Accessories Sale" 13000 700
+"Streaming Media Player" 59.99 "StreamMaster" "Entertainment" "Holiday Sale" 14000 750
+"Portable Projector Mini" 219.99 "ProjectLite" "Display" "Movie Night" 4800 250
+"Smart Doorbell with Camera" 149.99 "DoorGuard" "Security" "Home Safety Week" 6700 320
+"Electric Toothbrush Pro" 89.99 "SmileBright" "Personal Care" "Dental Health Month" 11500 600
+"Robot Vacuum Cleaner" 299.99 "CleanBot" "Home Appliance" "Spring Cleaning" 7200 400
+"Wireless Home Theater System" 499.99 "CinemaSound" "Audio" "Entertainment Expo" 5300 280
+"Digital Alarm Clock with LED" 39.99 "TimeWise" "Accessory" "Dorm Essentials" 12500 650
+"Smart Thermostat" 199.99 "EcoTemp" "Smart Home" "Energy Saving Week" 8100 420
+"Portable Bluetooth Turntable" 129.99 "RetroSpin" "Audio" "Vintage Fair" 4600 230
+"LED Desk Lamp with USB" 59.99 "BrightLite" "Accessory" "Office Essentials" 9800 500
+"Smart Plug 4-Pack" 34.99 "PlugSmart" "Smart Home" "Tech Week" 11200 580
+"Electric Kettle with Temperature Control" 79.99 "BoilMaster" "Kitchen Appliance" "Winter Warmers" 6700 340
+"Noise-Canceling Sleep Mask" 49.99 "DreamQuiet" "Personal Care" "Travel Essentials" 9200 480
+"Portable Photo Printer" 129.99 "PicPrint" "Accessory" "Holiday Season" 5400 290
+"Smart Scale with Body Metrics" 59.99 "HealthTrack" "Personal Care" "Fitness Month" 8600 450
+"Digital Luggage Scale" 19.99 "WeighEZ" "Accessory" "Travel Season" 15000 800
+"Wireless Meat Thermometer" 69.99 "GrillPerfect" "Kitchen Appliance" "BBQ Season" 7300 380
+"Smart Bike Lock" 99.99 "CycleSecure" "Accessory" "Cycling Week" 6200 310
+"Portable Air Purifier" 89.99 "FreshAir" "Home Appliance" "Allergy Season" 8100 420
+"Smart Water Bottle" 49.99 "HydraTech" "Accessory" "Fitness Expo" 9400 470
+"Electric Wine Opener Set" 59.99 "VinoEase" "Kitchen Appliance" "Wine Lovers' Month" 6800 340
+"Digital Instant Read Thermometer" 24.99 "TempCheck" "Kitchen Appliance" "Cooking Class" 12500 650
+"Smart Jump Rope" 39.99 "FitRope" "Fitness" "Health Expo" 8700 440
+"Wireless Key Finder" 29.99 "FindIt" "Accessory" "Gadget Fair" 9900 500
+"Smart Sous Vide Cooker" 149.99 "GourmetChef" "Kitchen Appliance" "Culinary Week" 5600 280
+"Bluetooth Sleep Headphones" 39.99 "SleepTunes" "Audio" "Relaxation Week" 10400 520
+"Smart Air Quality Monitor" 129.99 "AirSense" "Home Appliance" "Earth Day" 5900 300
