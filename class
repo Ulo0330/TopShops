@@ -1,0 +1,47 @@
+public class Product {
+    private String name;
+    private double price;
+    private String company;
+    private String type;
+    private String event;
+    private int totalSales;
+    private int[] salesLast7Days;
+
+    // Constructor
+    public Product(String name, double price, String company, String type, String event, int totalSales, int[] salesLast7Days) {
+        this.name = name;
+        this.price = price;
+        this.company = company;
+        this.type = type;
+        this.event = event;
+        this.totalSales = totalSales;
+        this.salesLast7Days = salesLast7Days;
+    }
+
+    // Getters
+    public String getName() { return name; }
+    public double getPrice() { return price; }
+    public String getCompany() { return company; }
+    public String getType() { return type; }
+    public String getEvent() { return event; }
+    public int getTotalSales() { return totalSales; }
+    public int[] getSalesLast7Days() { return salesLast7Days; }
+
+    // Setters
+    public void setName(String name) { this.name = name; }
+    public void setPrice(double price) { this.price = price; }
+    public void setCompany(String company) { this.company = company; }
+    public void setType(String type) { this.type = type; }
+    public void setEvent(String event) { this.event = event; }
+    public void setTotalSales(int totalSales) { this.totalSales = totalSales; }
+    public void setSalesLast7Days(int[] salesLast7Days) { this.salesLast7Days = salesLast7Days; }
+
+    // Method to calculate total sales of the last 7 days
+    public int calculateLast7DaysSales() {
+        int sum = 0;
+        for (int sales : salesLast7Days) {
+            sum += sales;
+        }
+        return sum;
+    }
+}
