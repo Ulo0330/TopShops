@@ -1,0 +1,487 @@
+FuelCell Rebel v4
+139.99
+New Balances
+Footwear
+Gift
+78599
+310 100 150 213 543 423 983 123
+
+Air Force 1
+125
+Nike
+Footwear
+Gift
+123004
+124 124 532 532 642 653 658 253
+
+Nike Tech
+135
+Nike
+Clothes
+Gift
+122304
+124 412 451 152 215 512 512 125
+
+Carhart Jacket
+100
+Carhart
+Clothes
+Gift
+12413215
+122 412 412 142 142 124 142 142
+
+Apple AirTag 4 Pack
+99.00
+Apple
+Electronics
+Holiday Sale
+500000
+8000 8200 8100 8300 8400 8500 8600
+
+Amazon Fire TV Stick HD
+39.99
+Amazon
+Electronics
+Black Friday
+450000
+7000 7100 7200 7300 7400 7500 7600
+
+Crocs Unisex Adult Classic Clog
+49.99
+Crocs
+Footwear
+Summer Sale
+600000
+9000 9100 9200 9300 9400 9500 9600
+
+Gildan Men's Crew T-Shirts Multipack
+19.99
+Gildan
+Apparel
+Back to School
+550000
+8500 8600 8700 8800 8900 9000 9100
+
+AUTOMET Women's Summer Tops
+24.99
+AUTOMET
+Apparel
+Spring Collection
+300000
+5000 5100 5200 5300 5400 5500 5600
+
+Stanley Quencher H2.0 Tumbler
+45.00
+Stanley
+Kitchen
+New Arrivals
+200000
+4000 4100 4200 4300 4400 4500 4600
+
+Owala FreeSip Insulated Water Bottle
+22.99
+Owala
+Kitchen
+Fitness Promotion
+180000
+3500 3600 3700 3800 3900 4000 4100
+
+Etekcity Food Kitchen Scale
+19.99
+Etekcity
+Kitchen
+Cooking Essentials
+220000
+3700 3800 3900 4000 4100 4200 4300
+
+Amazon Basics Printer Paper 20lb
+29.99
+Amazon Basics
+Office Supplies
+Office Essentials
+500000
+8000 8100 8200 8300 8400 8500 8600
+
+Nespresso Capsules Vertuo Coffee Pods
+33.00
+Nespresso
+Grocery
+Coffee Lovers
+350000
+6000 6100 6200 6300 6400 6500 6600
+
+HP Printer Paper
+24.99
+HP
+Office Supplies
+Back to Work
+400000
+7000 7100 7200 7300 7400 7500 7600
+
+Bounty Quick Size Paper Towels
+22.99
+Bounty
+Household
+Cleaning Essentials
+380000
+6500 6600 6700 6800 6900 7000 7100
+
+Premier Protein Shake
+26.99
+Premier Protein
+Grocery
+Health Kick
+320000
+5500 5600 5700 5800 5900 6000 6100
+
+Apple 2024 MacBook Air 13-inch
+999.00
+Apple
+Electronics
+Back to School
+150000
+2500 2600 2700 2800 2900 3000 3100
+
+Crocs Kids' Classic Clog
+39.99
+Crocs
+Footwear
+Summer Sale
+400000
+6000 6100 6200 6300 6400 6500 6600
+
+TruSkin Vitamin C Face Serum
+19.99
+TruSkin
+Beauty
+Skincare Routine
+280000
+4500 4600 4700 4800 4900 5000 5100
+
+First Aid Beauty KP Bump Eraser Body Scrub
+28.00
+First Aid Beauty
+Beauty
+Body Care
+150000
+2400 2500 2600 2700 2800 2900 3000
+
+LANEIGE Lip Sleeping Mask
+24.00
+LANEIGE
+Beauty
+Lip Care
+200000
+3200 3300 3400 3500 3600 3700 3800
+
+COSRX Snail Mucin 96% Power Repairing Essence
+21.00
+COSRX
+Beauty
+K-Beauty
+180000
+2900 3000 3100 3200 3300 3400 3500
+
+Dermora Golden Glow Under Eye Patches
+16.99
+Dermora
+Beauty
+Eye Care
+220000
+3600 3700 3800 3900 4000 4100 4200
+
+MAYBESTA Wireless Lavalier Lapel Microphone
+29.99
+MAYBESTA
+Electronics
+Audio Equipment
+120000
+2000 2100 2200 2300 2400 2500 2600
+
+Ernie Ball Regular Slinky Nickel Wound Guitar Strings
+6.99
+Ernie Ball
+Musical Instruments
+Guitar Accessories
+300000
+5000 5100 5200 5300 5400 5500 5600
+
+OneOdio Wired Over Ear Headphones
+32.99
+OneOdio
+Electronics
+Audio Equipment
+140000
+2300 2400 2500 2600 2700 2800 2900
+
+Elixir Strings Acoustic Guitar Strings
+14.99
+Elixir
+Musical Instruments
+Guitar Accessories
+160000
+2600 2700 2800 2900 3000 3100 3200
+
+KUKIHO Wireless Lavalier Microphone
+35.99
+KUKIHO
+Electronics
+Audio Equipment
+110000
+1800 1900 2000 2100 2200 2300 2400
+
+Kukka Tea Tree Oil
+12.99
+Kukka
+Beauty
+Essential Oils
+250000
+4100 4200 4300 4400 4500 4600 4700
+
+Apple Barrel Blue Cotton Paint
+0.99
+Apple Barrel
+Arts & Crafts
+Painting Supplies
+300000
+5000 5100 5200 5300 5400 5500 5600
+
+Red Heart Super Saver White Yarn
+3.99
+Red Heart
+Arts & Crafts
+Knitting Supplies
+280000
+4600 4700 4800 4900 5000 5100 5200
+
+Elmer's Disappearing Purple School Glue Sticks
+0.50
+Elmer's
+Office Supplies
+School Supplies
+400000
+6600
+
+Amazon Fire TV Stick HD
+39.99
+Amazon
+Electronics
+Black Friday
+450000
+7000 7100 7200 7300 7400 7500 7600
+
+Crocs Unisex Adult Classic Clog
+49.99
+Crocs
+Footwear
+Summer Sale
+600000
+9000 9100 9200 9300 9400 9500 9600
+
+Gildan Men's Crew T-Shirts Multipack
+19.99
+Gildan
+Apparel
+Back to School
+550000
+8500 8600 8700 8800 8900 9000 9100
+
+AUTOMET Women's Summer Tops
+24.99
+AUTOMET
+Apparel
+Spring Collection
+300000
+5000 5100 5200 5300 5400 5500 5600
+
+Stanley Quencher H2.0 Tumbler
+45.00
+Stanley
+Kitchen
+New Arrivals
+200000
+4000 4100 4200 4300 4400 4500 4600
+
+Owala FreeSip Insulated Water Bottle
+22.99
+Owala
+Kitchen
+Fitness Promotion
+180000
+3500 3600 3700 3800 3900 4000 4100
+
+Etekcity Food Kitchen Scale
+19.99
+Etekcity
+Kitchen
+Cooking Essentials
+220000
+3700 3800 3900 4000 4100 4200 4300
+
+Amazon Basics Printer Paper 20lb
+29.99
+Amazon Basics
+Office Supplies
+Office Essentials
+500000
+8000 8100 8200 8300 8400 8500 8600
+
+Apple iPad 10th Generation
+449.00
+Apple
+Electronics
+Tech Deals
+300000
+5000 5100 5200 5300 5400 5500 5600
+
+Apple Watch Series 10
+399.00
+Apple
+Electronics
+Fitness Week
+250000
+4200 4300 4400 4500 4600 4700 4800
+
+Nespresso Capsules Vertuo Coffee Pods
+33.00
+Nespresso
+Grocery
+Coffee Lovers
+350000
+6000 6100 6200 6300 6400 6500 6600
+
+HP Printer Paper
+24.99
+HP
+Office Supplies
+Back to Work
+400000
+7000 7100 7200 7300 7400 7500 7600
+
+Bounty Quick Size Paper Towels
+22.99
+Bounty
+Household
+Cleaning Essentials
+380000
+6500 6600 6700 6800 6900 7000 7100
+
+Premier Protein Shake
+26.99
+Premier Protein
+Grocery
+Health Kick
+320000
+5500 5600 5700 5800 5900 6000 6100
+
+Crocs Kids' Classic Clog
+39.99
+Crocs
+Footwear
+Summer Sale
+400000
+6000 6100 6200 6300 6400 6500 6600
+
+TruSkin Vitamin C Face Serum
+19.99
+TruSkin
+Beauty
+Skincare Routine
+280000
+4500 4600 4700 4800 4900 5000 5100
+
+First Aid Beauty KP Bump Eraser Body Scrub
+28.00
+First Aid Beauty
+Beauty
+Body Care
+150000
+2400 2500 2600 2700 2800 2900 3000
+
+LANEIGE Lip Sleeping Mask
+24.00
+LANEIGE
+Beauty
+Lip Care
+200000
+3200 3300 3400 3500 3600 3700 3800
+
+COSRX Snail Mucin 96% Power Repairing Essence
+21.00
+COSRX
+Beauty
+K-Beauty
+180000
+2900 3000 3100 3200 3300 3400 3500
+
+Dermora Golden Glow Under Eye Patches
+16.99
+Dermora
+Beauty
+Eye Care
+220000
+3600 3700 3800 3900 4000 4100 4200
+
+MAYBESTA Wireless Lavalier Lapel Microphone
+29.99
+MAYBESTA
+Electronics
+Audio Equipment
+120000
+2000 2100 2200 2300 2400 2500 2600
+
+Ernie Ball Regular Slinky Nickel Wound Guitar Strings
+6.99
+Ernie Ball
+Musical Instruments
+Guitar Accessories
+300000
+5000 5100 5200 5300 5400 5500 5600
+
+OneOdio Wired Over Ear Headphones
+32.99
+OneOdio
+Electronics
+Audio Equipment
+140000
+2300 2400 2500 2600 2700 2800 2900
+
+Elixir Strings Acoustic Guitar Strings
+14.99
+Elixir
+Musical Instruments
+Guitar Accessories
+160000
+2600 2700 2800 2900 3000 3100 3200
+
+KUKIHO Wireless Lavalier Microphone
+35.99
+KUKIHO
+Electronics
+Audio Equipment
+110000
+1800 1900 2000 2100 2200 2300 2400
+
+Kukka Tea Tree Oil
+12.99
+Kukka
+Beauty
+Essential Oils
+250000
+4100 4200 4300 4400 4500 4600 4700
+
+Apple Barrel Blue Cotton Paint
+0.99
+Apple Barrel
+Arts & Crafts
+Painting Supplies
+300000
+5000 5100 5200 5300 5400 5500 5600
+
+Red Heart Super Saver White Yarn
+3.99
+Red Heart
+Arts & Crafts
+Knitting Supplies
+280000
+4600 4700 4800 4900 5000 5100 5200
