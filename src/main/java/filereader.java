@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Main {
+public class filereader {
     public static void fileReader(String fileName, ArrayList<ArrayList<product>> productsByType, Map<String, Integer> categoryIndex,
                                   ArrayList<ArrayList<product>> productsByCompany, Map<String, Integer> companyIndex, ArrayList<ArrayList<product>> productsByEvent
             , Map<String, Integer> eventIndex) {
