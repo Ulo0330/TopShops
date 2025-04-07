@@ -1,0 +1,54 @@
+// TopTenCompaniesController.java
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class TopTenCompaniesController {
+    private List<Company> topTenCompanies;
+
+    public TopTenCompaniesController() {
+        this.topTenCompanies = new ArrayList<>();
+    }
+
+    public void retrieveTopTenCompanies() {
+        // Simulate retrieving data from Amazon API or database
+        // For demonstration purposes, we'll use hardcoded data
+        Company company1 = new Company("Company 1", 1000, 4.5);
+        Company company2 = new Company("Company 2", 800, 4.2);
+        Company company3 = new Company("Company 3", 700, 4.1);
+        // ...
+
+        topTenCompanies.add(company1);
+        topTenCompanies.add(company2);
+        topTenCompanies.add(company3);
+        // ...
+    }
+
+    public List<Company> getTopTenCompanies() {
+        return topTenCompanies;
+    }
+}
+
+class Company {
+    private String name;
+    private int sales;
+    private double rating;
+
+    public Company(String name, int sales, double rating) {
+        this.name = name;
+        this.sales = sales;
+        this.rating = rating;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getSales() {
+        return sales;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+}
