@@ -1,0 +1,62 @@
+// TopTenCompaniesUI.java
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+public class TopTenCompaniesUI {
+    private JFrame frame;
+    private JTable table;
+    private DefaultTableModel tableModel;
+
+    public TopTenCompaniesUI(TopTenCompaniesController controller) {
+        createUI(controller);
+    }
+
+    private void createUI(TopTenCompaniesController controller) {
+        frame = new JFrame("Top Ten Companies");
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+        });
+
+        tableModel = new DefaultTableModel();
+        tableModel.addColumn("Company Name");
+        tableModel.addColumn("Sales");
+        tableModel.addColumn("Rating");
+
+        table = new JTable(tableModel);
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
+
+        JButton refreshButton = new JButton("Refresh");
+        refreshButton.addActionListener(e -> {
+            controller.retrieveTopTenCompanies();
+            updateTable(controller.getTopTenCompanies());
+        });
+        frame.getContentPane().add(refreshButton, BorderLayout.SOUTH);
+
+        frame.pack();
+        frame.setVisible(true);
+
+        controller.retrieveTopTenCompanies();
+        updateTable(controller.getTopTenCompanies());
+    }
+
+    private void updateTable(List<Company> companies) {
+        tableModel.setRowCount(0);
+        for (Company company : companies) {
+            tableModel.addRow(new Object[]{company.getName(), company.getSales(), company.getRating()});
+        }
+    }
+
+    public static void main(String[] args) {
+        TopTenCompaniesController controller = new TopTenCompaniesController();
+        new TopTenCompaniesUI(controller);
+    }
+}
