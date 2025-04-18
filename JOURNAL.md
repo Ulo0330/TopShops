@@ -14,3 +14,9 @@ UI Skeleton (test) : Ulysses
 Event Recommendations: Ulysses
 Top Ten Companies: Azaan
 Top Ten Products: Daniel
+
+// Fri, April 18 2025: DE
+// Worried on complexity of Top Shops
+// May suggest new appoach to development tasks e.g. seperation of concerns pertaining to each member developing seperate UIs
+ 
+
