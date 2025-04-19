@@ -18,5 +18,7 @@ Top Ten Products: Daniel
 // Fri, April 18 2025: DE
 // Worried on complexity of Top Shops
 // May suggest new appoach to development tasks e.g. seperation of concerns pertaining to each member developing seperate UIs
+
+//  Fri, April 18 2025: Meeting - DE/CF
 // Discussed format of UI. Clarified and cleand up project file structure.
 // Showed progress on individual tasks
