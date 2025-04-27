@@ -21,3 +21,7 @@ Top Ten Products: Daniel
 //  Fri, April 18 2025: Meeting - DE/CF
 // Discussed format of UI. Clarified and cleand up project file structure.
 // Showed progress on individual tasks
+
+// Thursday, April 24th:
+// Scheduled merge party Sunday April 27th
+// Set deadline for individual parts to be done by Sunday

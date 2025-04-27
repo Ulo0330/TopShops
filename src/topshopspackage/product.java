@@ -1,4 +1,4 @@
-package com.topshopspackage;
+package topshopspackage;
 
 public class product {
     private String name, price, company, type, event, totalSales, salesBy7;
