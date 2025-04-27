@@ -27,4 +27,13 @@ public class product {
     public void printProducts() {
 
     }
+
+
+    public int getTotalSalesInt() {
+        try {
+            return Integer.parseInt(this.totalSales);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
 }
