@@ -1,3 +1,5 @@
+package topshopspackage;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +22,7 @@ public class TopShops {
         Map<String, Integer> eventIndex = new HashMap<>();
         ArrayList<ArrayList<product>> productsByEvent = new ArrayList<>();
 
-        String file = "/Users/claytonfrandeen/Documents/GitHub/TopShops2/src/topshopspackage/database.txt";
+        String file = "/Users/ulo.png/IdeaProjects/TopShops/src/topshopspackage/database.txt";
 
         fileReader(file, productsByType, categoryIndex, productsByCompany, companyIndex, productsByEvent, eventIndex);
 
