@@ -17,6 +17,8 @@ import java.util.List;
 
 import topshopspackage.product;
 
+import static topshopspackage.filereader.getTop10ProductsBySales;
+
 public class SwingUI {
     //Create GUI a show it.
     public static void CreateAndShowGUI(ArrayList<ArrayList<product>> productsByType, Map<String, Integer> categoryIndex,
@@ -41,8 +43,11 @@ public class SwingUI {
 
         JButton TopTenButton = new JButton("View Top Ten Products");
         TopTenButton.addActionListener(e -> {
-
+            ArrayList<product> top10 = getTop10ProductsBySales(productsByType);
+            TopTenProductsUI.open(top10);
         });
+
+
         TopShops.add(TopTenButton);
 
         JButton TopTenCompanyButton = new JButton("View Top Ten Companies");
@@ -425,6 +430,35 @@ public class SwingUI {
             frame.setVisible(true);
         }
     }
+// Daniel - Top Ten Products UI
+    public class TopTenProductsUI {
+        public static void open(ArrayList<product> top10) {
+            JFrame frame = new JFrame("Top 10 Products");
+            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            frame.setSize(400, 400);
+            frame.setLayout(new BorderLayout());
+
+            JLabel titleLabel = new JLabel("Top 10 Products by Sales", SwingConstants.CENTER);
+            titleLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
+            titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+            frame.add(titleLabel, BorderLayout.NORTH);
+
+            DefaultListModel<String> listModel = new DefaultListModel<>();
+            for (int i = 0; i < top10.size(); i++) {
+                product p = top10.get(i);
+                String info = (i + 1) + ". " + p.getName() + " - $" + p.getPrice() + " - " + p.getTotalSales() + " sold";
+                listModel.addElement(info);
+            }
+
+            JList<String> productList = new JList<>(listModel);
+            productList.setFont(new Font("Monospaced", Font.PLAIN, 14));
+            JScrollPane scrollPane = new JScrollPane(productList);
+            frame.add(scrollPane, BorderLayout.CENTER);
+
+            frame.setVisible(true);
+        }
+    }
+
 
 
 }
