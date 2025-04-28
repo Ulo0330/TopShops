@@ -7,8 +7,7 @@ import java.util.Map;
 import topshopspackage.*;
 
 import static topshopspackage.SwingUI.CreateAndShowGUI;
-import static topshopspackage.filereader.fileReader;
-
+import static topshopspackage.filereader.*;
 
 
 public class TopShops {
@@ -22,7 +21,7 @@ public class TopShops {
         Map<String, Integer> eventIndex = new HashMap<>();
         ArrayList<ArrayList<product>> productsByEvent = new ArrayList<>();
 
-        String file = "/Users/ulo.png/IdeaProjects/TopShops/src/topshopspackage/database.txt";
+        String file = "/Users/blkhttr/Desktop/dev/School/CS370/TopShops/src/topshopspackage/database.txt";
 
         fileReader(file, productsByType, categoryIndex, productsByCompany, companyIndex, productsByEvent, eventIndex);
 
@@ -41,5 +40,8 @@ public class TopShops {
         //printProducts(productsByCompany.get(3));
 
 
+        System.out.println("\nTop 10 Products by Unit Sales:");
+        ArrayList<product> top10 = getTop10ProductsBySales(productsByType);
+        printProducts(top10);
     }
 }
