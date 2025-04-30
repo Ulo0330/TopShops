@@ -7,6 +7,7 @@ import java.util.Map;
 import static topshopspackage.SwingUI.CreateAndShowGUI;
 import static topshopspackage.filereader.fileReader;
 
+
 public class TopShops {
     public static void main(String[] args) {
         // Data structures for categorization
@@ -21,6 +22,8 @@ public class TopShops {
 
         // Read from MySQL database
         fileReader(productsByType, categoryIndex, productsByCompany, companyIndex, productsByEvent, eventIndex);
+
+  
 
         // Print one product for verification
         if (!productsByType.isEmpty() && !productsByType.get(0).isEmpty()) {

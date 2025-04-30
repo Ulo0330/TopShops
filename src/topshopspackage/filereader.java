@@ -61,4 +61,27 @@ public class filereader {
             System.out.println("Database error: " + e.getMessage());
         }
     }
+
+
+    // Top 10 Products
+    public static ArrayList<product> getTop10ProductsBySales(ArrayList<ArrayList<product>> productsByType) {
+        ArrayList<product> allProducts = new ArrayList<>();
+
+        // Flatten the list of lists
+        for (ArrayList<product> productList : productsByType) {
+            allProducts.addAll(productList);
+        }
+
+        // Sort by totalSales in descending order
+        allProducts.sort((p1, p2) -> Integer.compare(p2.getTotalSalesInt(), p1.getTotalSalesInt()));
+
+        // Return top 10
+        ArrayList<product> top10 = new ArrayList<>();
+        for (int i = 0; i < 10 && i < allProducts.size(); i++) {
+            top10.add(allProducts.get(i));
+        }
+
+        return top10;
+    }
+
 }
