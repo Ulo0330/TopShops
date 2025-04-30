@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import topshopspackage.*;
-
 import static topshopspackage.SwingUI.CreateAndShowGUI;
-import static topshopspackage.filereader.*;
+import static topshopspackage.filereader.fileReader;
 
 
 public class TopShops {
     public static void main(String[] args) {
+        // Data structures for categorization
         Map<String, Integer> categoryIndex = new HashMap<>();
         ArrayList<ArrayList<product>> productsByType = new ArrayList<>();
 
@@ -21,27 +20,22 @@ public class TopShops {
         Map<String, Integer> eventIndex = new HashMap<>();
         ArrayList<ArrayList<product>> productsByEvent = new ArrayList<>();
 
-        String file = "/Users/blkhttr/Desktop/dev/School/CS370/TopShops/src/topshopspackage/database.txt";
+        // Read from MySQL database
+        fileReader(productsByType, categoryIndex, productsByCompany, companyIndex, productsByEvent, eventIndex);
 
-        fileReader(file, productsByType, categoryIndex, productsByCompany, companyIndex, productsByEvent, eventIndex);
+  
 
-        System.out.println(productsByType.get(0).get(0).getName());
-       // product tempProduct = new product();
-//        tempProduct = productsByType.get(0).get(0);
-       // graph(tempProduct);
+        // Print one product for verification
+        if (!productsByType.isEmpty() && !productsByType.get(0).isEmpty()) {
+            System.out.println(productsByType.get(0).get(0).getName());
+        }
 
+        // Start the GUI
         CreateAndShowGUI(productsByType, categoryIndex, productsByCompany, companyIndex, productsByEvent, eventIndex);
-        System.out.println("Products by Category");
+
+        // Optional debug prints
+        System.out.println("Products by Category:");
         System.out.println("Electronics: ");
-        //printProducts(productsByType.get(2));
-        System.out.println();
-        System.out.println("Products by Company");
-        System.out.println("Apple: ");
-        //printProducts(productsByCompany.get(3));
-
-
-        System.out.println("\nTop 10 Products by Unit Sales:");
-        ArrayList<product> top10 = getTop10ProductsBySales(productsByType);
-        printProducts(top10);
+        // You can add: filereader.printProducts(productsByType.get(categoryIndex.get("Electronics")));
     }
 }
