@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static topshopspackage.SwingUI.CreateAndShowGUI;
+
 import static topshopspackage.filereader.fileReader;
+import static topshopspackage.filereader.fileReader2;
 
 
 public class TopShops {
@@ -20,22 +22,12 @@ public class TopShops {
         Map<String, Integer> eventIndex = new HashMap<>();
         ArrayList<ArrayList<product>> productsByEvent = new ArrayList<>();
 
+        String fileName = "/Users/claytonfrandeen/Documents/Programs/TopShops/src/topshopspackage/database.txt";
         // Read from MySQL database
-        fileReader(productsByType, categoryIndex, productsByCompany, companyIndex, productsByEvent, eventIndex);
-
-  
-
-        // Print one product for verification
-        if (!productsByType.isEmpty() && !productsByType.get(0).isEmpty()) {
-            System.out.println(productsByType.get(0).get(0).getName());
-        }
+        fileReader2(fileName, productsByType, categoryIndex, productsByCompany, companyIndex, productsByEvent, eventIndex);
+        //fileReader(productsByType, categoryIndex, productsByCompany, companyIndex, productsByEvent, eventIndex);
 
         // Start the GUI
         CreateAndShowGUI(productsByType, categoryIndex, productsByCompany, companyIndex, productsByEvent, eventIndex);
-
-        // Optional debug prints
-        System.out.println("Products by Category:");
-        System.out.println("Electronics: ");
-        // You can add: filereader.printProducts(productsByType.get(categoryIndex.get("Electronics")));
     }
 }

@@ -25,3 +25,11 @@ Top Ten Products: Daniel
 // Thursday, April 24th:
 // Scheduled merge party Sunday April 27th
 // Set deadline for individual parts to be done by Sunday
+
+// Sunday, April 27th: 
+// Merge Party!!
+// Successfully merged all aspects
+
+// Tuesday, April 29th
+// Merge AfterParty
+// Formatting and creating todo list

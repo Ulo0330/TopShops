@@ -3,21 +3,20 @@ package topshopspackage;
 import javax.swing.*;
 
 //UI logic
-import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Map;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 
-import topshopspackage.product;
-
+import static topshopspackage.RecommendedByEvent.getTop10ByEvent;
 import static topshopspackage.filereader.getTop10ProductsBySales;
+import static topshopspackage.productTrend.calculateRegression;
 
 public class SwingUI {
     //Create GUI a show it.
@@ -27,62 +26,73 @@ public class SwingUI {
 
         // Create and set up the window
         JFrame TopShops = new JFrame("TopShops");
-        TopShops.setSize(100000, 100000);
+        TopShops.setExtendedState(JFrame.MAXIMIZED_BOTH);
         TopShops.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        TopShops.setLayout(new GridLayout(2, 3));
+        // LOGO
+        ImageIcon logo = new ImageIcon("topshopspackage/logo.png");
+        TopShops.setIconImage(logo.getImage());
 
-        // add label to view top ten products
-        JLabel TopTenLabel = new JLabel("View Top Ten Products");
-        JLabel TopTenCompanyLabel = new JLabel("View Top Ten Company");
-        JLabel EventLabel = new JLabel("View Event Recommendations");
-        TopShops.add(TopTenCompanyLabel);
-        TopShops.add(TopTenLabel);
-        TopShops.add(EventLabel);
+        // Creating Panel that will switch out with other panels
+        CardLayout topShopsLayout = new CardLayout();
+        JPanel MainPage = new JPanel(topShopsLayout);
 
+        //Initializing all panel types
+        MainPage.add(homePage(productsByType, categoryIndex, productsByCompany, companyIndex, productsByEvent, eventIndex,topShopsLayout, MainPage), "Home");
 
-        JButton TopTenButton = new JButton("View Top Ten Products");
-        TopTenButton.addActionListener(e -> {
-            ArrayList<product> top10 = getTop10ProductsBySales(productsByType);
-            TopTenProductsUI.open(top10);
-        });
+        MainPage.add(TopTenProductsUI.open(productsByType, categoryIndex, topShopsLayout, MainPage), "Top Ten Products");
 
-
-        TopShops.add(TopTenButton);
-
-        JButton TopTenCompanyButton = new JButton("View Top Ten Companies");
-        TopTenButton.addActionListener(e -> {
-
-        });
-        TopShops.add(TopTenCompanyButton);
-
-        JButton EventButton = new JButton("View Products Recommendations");
-        EventButton.addActionListener(e -> {
-            EventRecommendationUI.open(productsByEvent,eventIndex); // open new Event UI
-        });
-        TopShops.add(EventButton);
-
-        //JButton ViewTrends = new JButton("Product Trend");
-
-       // ViewTrends.addActionListener(e -> {
-        //    productTrendUI.graph(productsByType.get(0).get(0));
-       // });
-       // TopShops.add(ViewTrends);
+        MainPage.add(EventRecommendationUI.open(productsByEvent, eventIndex, topShopsLayout, MainPage), "Event Recommendations");
+        TopShops.add(MainPage);
 
         //Display Window
         TopShops.pack();
         TopShops.setVisible(true);
     }
 
-    public static void main(ArrayList<ArrayList<product>> productsByType, Map<String, Integer> categoryIndex,
-                            ArrayList<ArrayList<product>> productsByCompany, Map<String, Integer> companyIndex, ArrayList<ArrayList<product>> productsByEvent
-            , Map<String, Integer> eventIndex) {
+    /* Author: Clayton Frandeen
+     * Last Modified: April 30th, 2025
+     * File Description: Creates and returns a home page panel that will have labels and buttons to redirect
+     * to Top Ten Products, Top Ten Companies, and Event Recommendations
+     */
+    public static JPanel homePage(ArrayList<ArrayList<product>> productsByType, Map<String, Integer> categoryIndex,
+                                  ArrayList<ArrayList<product>> productsByCompany, Map<String, Integer> companyIndex, ArrayList<ArrayList<product>> productsByEvent
+            , Map<String, Integer> eventIndex, CardLayout topShopsLayout, JPanel TopShopsPanel) {
 
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                CreateAndShowGUI(productsByType, categoryIndex, productsByCompany, companyIndex, productsByEvent, eventIndex);
-            }
+        JPanel homePage = new JPanel();
+        // add label to view top ten products
+
+        homePage.setLayout(new GridLayout(2, 3));
+        homePage.setSize(100000, 100000);
+        JLabel TopTenLabel = new JLabel("View Top Ten Products");
+        JLabel TopTenCompanyLabel = new JLabel("View Top Ten Company");
+        JLabel EventLabel = new JLabel("View Event Recommendations");
+        homePage.add(TopTenCompanyLabel);
+        homePage.add(TopTenLabel);
+        homePage.add(EventLabel);
+
+
+        JButton TopTenButton = new JButton("View Top Ten Products");
+        TopTenButton.addActionListener(e -> {
+            topShopsLayout.show(TopShopsPanel, "Top Ten Products");
         });
+
+
+        homePage.add(TopTenButton);
+
+        JButton TopTenCompanyButton = new JButton("View Top Ten Companies");
+        TopTenCompanyButton.addActionListener(e -> {
+
+        });
+        homePage.add(TopTenCompanyButton);
+
+        JButton EventButton = new JButton("View Products Recommendations");
+        EventButton.addActionListener(e -> {
+            topShopsLayout.show(TopShopsPanel, "Event Recommendations"); // open new Event UI
+        });
+        homePage.add(EventButton);
+
+        return homePage;
     }
 
     /* Author: Clayton Frandeen
@@ -93,81 +103,116 @@ public class SwingUI {
      * and the graph filled with plot points and regression line.
      */
     public class productTrendUI {
-        public static void graph(product current) {
-            int[] sales = productTrend.toNum(current.getSalesBy7());
-            productTrend.regressionResult r = productTrend.calculateRegression(current);
+        public static void graph(ArrayList<product> current) {
+            if (current.size() == 1) {
+                int[] sales = productTrend.toNum(current.get(0).getSalesBy7());
+                productTrend.regressionResult r = calculateRegression(current.get(0));
 
-            // Creating the frame set up for our product trend window
-            JFrame graphFrame = new JFrame("Product Trends");
-            graphFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Just closes window, not whole program
-            graphFrame.setSize(500, 700);
-            graphFrame.setLayout(new GridLayout(2, 1));
-            graphFrame.setResizable(false);                               //Non-resizable, So information doesn't get distorted
+                // Creating the frame set up for our product trend window
+                JFrame graphFrame = new JFrame("Product Trends");
+                graphFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Just closes window, not whole program
+                graphFrame.setSize(700, 600);
+                graphFrame.setLayout(new BorderLayout());
+                graphFrame.setResizable(false);                               //Non-resizable, So information doesn't get distorted
 
-            //Top panel for the product information
-            JPanel productInfo = new JPanel();
-            productInfo.setLayout(new GridLayout(3, 3));       //Grid layout to use JLabels to add in our information
+                // Top panel for the product information
+                JPanel productInfo = new JPanel();
+                productInfo.setLayout(new BoxLayout(productInfo, BoxLayout.Y_AXIS));
+                productInfo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Padding
 
-            JLabel productName = new JLabel("   " + current.getName());
-            productInfo.add(productName);
+                // Labels
+                productInfo.add(createLabel("Product: " + current.get(0).getName()));
+                productInfo.add(createLabel("Price: $" + current.get(0).getPrice()));
+                productInfo.add(createLabel("Total Sales: " + current.get(0).getTotalSales()));
+                productInfo.add(createLabel("Company: " + current.get(0).getCompany()));
+                productInfo.add(createLabel("Line of Best Fit: y = " + r.beta1 + "x + " + r.beta0));
 
-            JLabel productPrice = new JLabel("$" + current.getPrice());
-            productInfo.add(productPrice);
+                float growthRate = productTrend.calculateGrowthRate(r.beta0, r.beta1);
+                productInfo.add(createLabel("Growth Rate: " + growthRate));
 
-            JLabel productSales = new JLabel("Total Sales: " + current.getTotalSales());
-            productInfo.add(productSales);
+                // Add recommendation
+                String recommendation;
+                if (growthRate < 0.0) {
+                    recommendation = "Avoid this at all costs.";
+                } else if (growthRate < 10.0) {
+                    recommendation = "This is a risky investment!";
+                } else if (growthRate < 50.0) {
+                    recommendation = "This is a good investment!";
+                } else {
+                    recommendation = "This is a great investment!";
+                }
+                productInfo.add(createLabel("Recommendation: " + recommendation));
 
-            JLabel productCompany = new JLabel(current.getCompany());
-            productInfo.add(productCompany);
+                graphFrame.add(productInfo, BorderLayout.NORTH);
 
-            JLabel regressionLine = new JLabel("Line of best fit:");
-            productInfo.add(regressionLine);
+                 // Graph
+                 GraphPanel graphPanel = new GraphPanel();
+                 graphPanel.setArray(current);
+                 //graphPanel.setYValues(sales);
+                 //graphPanel.setLine(r.beta0, r.beta1);
+                 graphFrame.add(graphPanel, BorderLayout.CENTER);
 
-            JLabel regressionLine2 = new JLabel("y = " + r.beta1 + "x + " + r.beta0);
-            productInfo.add(regressionLine2);
+                 graphFrame.setVisible(true);
+            } else if (current.size() > 1) {
+                JFrame graphFrame = new JFrame("Product Trends");
+                graphFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //Just closes window, not whole program
+                graphFrame.setSize(700, 600);
+                graphFrame.setLayout(new BorderLayout());
+                graphFrame.setResizable(false);
 
-            float growthRate = productTrend.calculateGrowthRate(r.beta0, r.beta1);
-            JLabel growthRateLabel = new JLabel("Growth rate: " + growthRate);
-            productInfo.add(growthRateLabel);
+                // Graph Legend
+                JPanel legendPanel = new JPanel();
+                int rows = (int) Math.ceil(current.size() / 2.0);
+                legendPanel.setLayout(new GridLayout(rows, 2, 10, 5));
+                legendPanel.setBorder(BorderFactory.createTitledBorder("Legend"));
 
-            if (growthRate < 0.0) {
-                JLabel recommend = new JLabel("Recommendation: Avoid this at all costs");
-                productInfo.add(recommend);
-            } else if (growthRate > 0.0 && growthRate < 10.0) {
-                JLabel recommend = new JLabel("Recommendation: This is a risky investment!");
-                productInfo.add(recommend);
-            } else if (growthRate > 10.0 && growthRate < 50.0) {
-                JLabel recommend = new JLabel("Recommendation: This is a good investment!");
-                productInfo.add(recommend);
-            } else if (growthRate > 50.0) {
-                JLabel recommend = new JLabel("Recommendation: This is a great investment!");
-                productInfo.add(recommend);
+                Color[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.MAGENTA, Color.ORANGE,
+                        Color.PINK, Color.CYAN, Color.YELLOW, Color.GRAY, Color.DARK_GRAY};
+
+                for (int i = 0; i < current.size() && i < 10; i++) {
+                    product p = current.get(i);
+                    Color color = colors[i % colors.length];
+
+                    JPanel item = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+                    // Colored square
+                    JLabel colorBox = new JLabel();
+                    colorBox.setOpaque(true);
+                    colorBox.setBackground(color);
+                    colorBox.setPreferredSize(new Dimension(15, 15));
+
+                    // Product label
+                    JLabel label = new JLabel(" " + p.getName());
+
+                    item.add(colorBox);
+                    item.add(label);
+                    legendPanel.add(item);
+                }
+
+                // Graph of top ten products
+                GraphPanel graphPanel = new GraphPanel();
+                graphPanel.setArray(current);
+
+                graphFrame.add(legendPanel, BorderLayout.NORTH);
+                graphFrame.add(graphPanel, BorderLayout.CENTER);
+                graphFrame.setVisible(true);
             }
+        }
 
-            graphFrame.add(productInfo);
-            //Graph
-            GraphPanel graphPanel = new GraphPanel();
-            graphPanel.setYValues(sales);
-            graphPanel.setLine(r.beta0, r.beta1);
-            graphFrame.add(graphPanel);
-
-            graphFrame.setVisible(true);
+        // Helper method to add a label
+        private static JLabel createLabel(String text) {
+            JLabel label = new JLabel(text);
+            label.setFont(new Font("SansSerif", Font.PLAIN, 14));
+            label.setAlignmentX(Component.LEFT_ALIGNMENT);
+            label.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0)); // Top/bottom spacing
+            return label;
         }
 
         //This portion is added by ChatGPT, modified by Clayton Frandeen
         public static class GraphPanel extends JPanel {
-            private int[] yValues;
-            private float intercept;
-            private float slope;
-
-            public void setYValues(int[] yValues) {
-                this.yValues = yValues;
-                repaint();
-            }
-
-            public void setLine(float intercept, float slope) {
-                this.intercept = intercept;
-                this.slope = slope;
+            private ArrayList<product> current;
+            public void setArray (ArrayList<product> products) {
+                current = products;
                 repaint();
             }
 
@@ -178,7 +223,7 @@ public class SwingUI {
 
                 int width = getWidth();
                 int height = getHeight();
-
+                int maxY = 10000;
                 int padding = 50;
                 int labelPadding = 30;
                 int graphWidth = width - 2 * padding - labelPadding;
@@ -197,17 +242,21 @@ public class SwingUI {
                     g2.setColor(Color.LIGHT_GRAY);
                     g2.drawLine(originX, y, originX + graphWidth, y);
                     g2.setColor(Color.BLACK);
-                    g2.drawString(Integer.toString(i * 100), originX - 40, y + 5);
+                    g2.drawString(Integer.toString(i * (maxY/ numYDivisions)), originX - 40, y + 5);
                 }
 
                 int numXDivisions = 10;
                 LocalDate currentDate = LocalDate.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d");
                 for (int i = 0; i <= numXDivisions; i++) {
                     int x = originX + (i * graphWidth / numXDivisions);
                     g2.setColor(Color.LIGHT_GRAY);
                     g2.drawLine(x, originY, x, padding);
                     g2.setColor(Color.BLACK);
-                    g2.drawString(Integer.toString(i), x - 5, originY + 20);
+
+                    LocalDate labelDate = currentDate.minusDays((8 - i) * 7L);
+                    String dateLabel = labelDate.format(formatter);
+                    g2.drawString(dateLabel, x - 5, originY + 20);
                     //g2.drawString(String.valueOf(currentDate), x, originY - 20);
                 }
 
@@ -219,27 +268,31 @@ public class SwingUI {
                 g2Rotated.drawString("Sales", -height / 2 - 20, 20);
                 g2Rotated.dispose();
 
-                //Adding plot points
-                if (yValues != null) {
+                // Plot each product
+                Color[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.MAGENTA, Color.ORANGE, Color.PINK, Color.CYAN, Color.YELLOW, Color.GRAY, Color.DARK_GRAY};
+
+                for (int pIndex = 0; pIndex < current.size() && pIndex < 10; pIndex++) {
+                    product p = current.get(pIndex);
+                    int[] sales = productTrend.toNum(p.getSalesBy7());
+                    Color c = colors[pIndex % colors.length];
+                    g2.setColor(c);
+                    // Plot points
                     int pointDiameter = 8;
-
                     int xStep = graphWidth / numXDivisions;
-
-                    for (int i = 0; i < yValues.length; i++) {
+                    for (int i = 0; i < sales.length; i++) {
                         int x = originX + ((i + 1) * xStep);
-                        int y = originY - (yValues[i] * graphHeight / 1000); // scale y to 0–1000
+                        int y = originY - (sales[i] * graphHeight / maxY); // scale y to 0–1000
 
-                        g.setColor(Color.BLACK);
                         g.fillOval(x - pointDiameter / 2, y - pointDiameter / 2, pointDiameter, pointDiameter);
                     }
-                }
 
-                //Adding Regression Line
-                if (yValues != null) {
-                    int xStep = graphWidth / numXDivisions;
+                    //Draw Regression Line
+                    productTrend.regressionResult r = calculateRegression(p);
+                    float slope = r.beta1;
+                    float intercept = r.beta0;
 
                     Graphics2D g3 = (Graphics2D) g;
-                    g3.setColor(Color.BLUE);
+
                     g3.setStroke(new BasicStroke(2));
 
                     // Graph x-values from 0 to 10
@@ -251,56 +304,37 @@ public class SwingUI {
                     double y2 = slope * x2 + intercept;
 
                     // Clamp y values between 0 and 1000 for clean drawing
-                    y1 = Math.max(0, Math.min(1000, y1));
-                    y2 = Math.max(0, Math.min(1000, y2));
+                    y1 = Math.max(0, Math.min(maxY, y1));
+                    y2 = Math.max(0, Math.min(maxY, y2));
 
                     // Convert to pixel coords
                     int px1 = originX + (int) (x1 * xStep);
-                    int py1 = originY - (int) (y1 * graphHeight / 1000);
+                    int py1 = originY - (int) (y1 * graphHeight / maxY);
                     int px2 = originX + (int) (x2 * xStep);
-                    int py2 = originY - (int) (y2 * graphHeight / 1000);
+                    int py2 = originY - (int) (y2 * graphHeight / maxY);
 
                     g3.drawLine(px1, py1, px2, py2);
                 }
 
-            }
+            } // End paintComponent
 
             @Override
             public Dimension getPreferredSize() {
                 return new Dimension(600, 600);
             }
         }
-    }
+    } // End productTrendUI
+
 
     /*****************
      * Ulyses UI
      ******************/
     public class EventRecommendationUI {
-     /*   // Shared data
-        static Map<String, Integer> eventIndex = new HashMap<>();
-        static ArrayList<ArrayList<product>> productsByEvent = new ArrayList<>();
-*/
-     /*public static void open(ArrayList<ArrayList<product>> productsByEvent, Map<String, Integer> eventIndex) {
-         // Now use the given productsByEvent and eventIndex
-     }*/
-
-     //   public static void main(String[] args) {
-     public static void open(ArrayList<ArrayList<product>> productsByEvent, Map<String, Integer> eventIndex) {
-         // === Load file at the beginning ===
-      /*      String filePath = "database.txt"; // <-- Update path if needed
-            Main.fileReader(filePath,
-                    new ArrayList<>(), new HashMap<>(),
-                    new ArrayList<>(), new HashMap<>(),
-                    productsByEvent, eventIndex);
-            System.out.println("File loaded: " + filePath);
-*/
-
+     public static JPanel open(ArrayList<ArrayList<product>> productsByEvent, Map<String, Integer> eventIndex, CardLayout topShopsLayout, JPanel topShopsPanel) {
             // === Set up JFrame ===
-            JFrame frame = new JFrame("Event Recommendations");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(1000, 600);
+            JPanel frame = new JPanel();
             frame.setLayout(new BorderLayout());
-            frame.getContentPane().setBackground(Color.WHITE);
+            frame.setBackground(Color.WHITE);
 
             // Title label
             JLabel titleLabel = new JLabel("Event Recommendations", SwingConstants.CENTER);
@@ -327,7 +361,6 @@ public class SwingUI {
             Collections.sort(eventNames);
             JComboBox<String> eventDropdown = new JComboBox<>(eventNames.toArray(new String[0]));
             eventDropdown.setFont(new Font("SansSerif", Font.PLAIN, 12));
-            eventDropdown.setMaximumRowCount(5);
             eventDropdown.setPreferredSize(new Dimension(150, 25));
             eventDropdown.setMaximumSize(new Dimension(150, 25));
             eventDropdown.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -343,29 +376,23 @@ public class SwingUI {
             JLabel productLabel = new JLabel("Products", SwingConstants.CENTER);
             productLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
 
-            DefaultListModel<String> listModel = new DefaultListModel<>();
-            JList<String> productList = new JList<>(listModel);
-            productList.setFont(new Font("Monospaced", Font.PLAIN, 14));
-            productList.setFixedCellHeight(25);
-            JScrollPane productScroll = new JScrollPane(productList);
+            JPanel productsPanel = new JPanel();
+            productsPanel.setLayout(new BoxLayout(productsPanel, BoxLayout.Y_AXIS));
+
+            JScrollPane productsScrollPane = new JScrollPane(productsPanel);
 
             rightPanel.add(productLabel, BorderLayout.NORTH);
-            rightPanel.add(productScroll, BorderLayout.CENTER);
+            rightPanel.add(productsScrollPane, BorderLayout.CENTER);
 
             // === Update product list when dropdown changes ===
             eventDropdown.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     String event = (String) eventDropdown.getSelectedItem();
-                    listModel.clear();
-
                     if (eventIndex.containsKey(event)) {
-                        List<product> topProducts = RecommendedByEvent.getTop10ByEvent(event, productsByEvent, eventIndex);
-                        for (int i = 0; i < topProducts.size(); i++) {
-                            product p = topProducts.get(i);
-                            listModel.addElement((i + 1) + ". " + p.getName() + "    $" + p.getPrice());
-                        }
+                        List<product> topProducts = getTop10ByEvent(event, productsByEvent, eventIndex);
+                        updateProducts(productsPanel,topProducts);
                     } else {
-                        listModel.addElement("No products found for this event.");
+                        updateProducts(productsPanel,Collections.emptyList());
                     }
                 }
             });
@@ -383,79 +410,173 @@ public class SwingUI {
             topRightPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 20, 10));
             topRightPanel.setBackground(Color.WHITE);
 
-            JButton refreshBtn = new JButton("🔄 Refresh");
             JButton homeBtn = new JButton("🏠 Home");
-            refreshBtn.setFocusPainted(false);
             homeBtn.setFocusPainted(false);
-
-            topRightPanel.add(refreshBtn);
+            JButton viewAllTrends = new JButton("View All Trends");
+            topRightPanel.add(viewAllTrends);
             topRightPanel.add(homeBtn);
+
             frame.add(topRightPanel, BorderLayout.PAGE_START);
 
             // === Button Actions ===
 
-         /*
-            // Refresh button working
-            refreshBtn.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    eventIndex.clear();
-                    productsByEvent.clear();
-                    Main.fileReader(filePath,
-                            new ArrayList<>(), new HashMap<>(),
-                            new ArrayList<>(), new HashMap<>(),
-                            productsByEvent, eventIndex);
-
-                    // Update the dropdown with refreshed events
-                    List<String> updatedEvents = new ArrayList<>(eventIndex.keySet());
-                    Collections.sort(updatedEvents);
-                    eventDropdown.setModel(new DefaultComboBoxModel<>(updatedEvents.toArray(new String[0])));
-
-                    // Clear product list
-                    listModel.clear();
-
-                    JOptionPane.showMessageDialog(frame, "✅ Refreshed Successfully!");
-                }
-            });
-
             // Home button (empty for now)
             homeBtn.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    System.out.println("Home button clicked (feature coming soon)!");
-                    // TODO: In future: Switch to MainPage screen
+                    topShopsLayout.show(topShopsPanel, "Home");
                 }
-
-
             });
-*/
+
+         viewAllTrends.addActionListener(new ActionListener() {
+             public void actionPerformed(ActionEvent e) {
+                 String event = (String) eventDropdown.getSelectedItem();
+                     ArrayList<product> topProducts = productsByEvent.get(eventIndex.get(event));
+                     productTrendUI.graph(topProducts);
+                 }
+         });
             frame.setVisible(true);
+            return frame;
         }
+    }
+
+    static void updateProducts(JPanel eventPanel, List<product> products) {
+        eventPanel.removeAll();
+        if(products.size() == 0) {
+            eventPanel.add(new JLabel("No products found."));
+        } else {
+            for (int i = 0; i < 10 && i < products.size(); i++) {
+                product p = products.get(i);
+
+                JPanel entryPanel = new JPanel(new BorderLayout());
+                JLabel productInfo = new JLabel( (i+1) + ". " + p.getName() + "    $" + p.getPrice() + "    " + p.getTotalSales());
+                ArrayList<product> current = new ArrayList<>();
+                current.add(p);
+                JButton viewTrends = new JButton("View Product Trends");
+                viewTrends.addActionListener(e ->  {
+                    productTrendUI.graph(current);
+                });
+
+                entryPanel.add(productInfo, BorderLayout.WEST);
+                entryPanel.add(viewTrends, BorderLayout.EAST);
+                eventPanel.add(entryPanel);
+            }
+        }
+        eventPanel.revalidate();
+        eventPanel.repaint();
     }
 // Daniel - Top Ten Products UI
     public class TopTenProductsUI {
-        public static void open(ArrayList<product> top10) {
-            JFrame frame = new JFrame("Top 10 Products");
-            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            frame.setSize(400, 400);
+        public static JPanel open(ArrayList<ArrayList<product>> productsByType, Map<String, Integer> categoryIndex, CardLayout topShopsLayout, JPanel topShopsPanel) {
+            JPanel frame = new JPanel();
             frame.setLayout(new BorderLayout());
 
+            JPanel contentPanel = new JPanel(new GridLayout(1, 2, 50, 0));
+            contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 50, 50));
+            contentPanel.setBackground(Color.WHITE);
+            //Left Panel (Dropdown Menu)
+            JPanel leftPanel = new JPanel();
+            leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+            leftPanel.setBackground(Color.WHITE);
+
+            JLabel dropdownLabel = new JLabel("Product Categories", SwingConstants.CENTER);
+            dropdownLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
+            dropdownLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            List<String> categoryNames = new ArrayList<>(categoryIndex.keySet());
+            Collections.sort(categoryNames);
+            categoryNames.add(0, "All Categories");
+            JComboBox<String> categoryDropdown = new JComboBox<>(categoryNames.toArray(new String[0]));
+            categoryDropdown.setFont(new Font("SansSerif", Font.PLAIN, 12));
+
+            categoryDropdown.setPreferredSize(new Dimension(150, 25));
+            categoryDropdown.setMaximumSize(new Dimension(150, 25));
+            categoryDropdown.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+
+            leftPanel.add(dropdownLabel);
+            leftPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+            leftPanel.add(categoryDropdown);
+
+            // Right Panel (Products)
+            JPanel rightPanel = new JPanel(new BorderLayout(10, 10));
+            rightPanel.setBackground(Color.WHITE);
+
+            JLabel productLabel = new JLabel("Products", SwingConstants.CENTER);
+            productLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
+
+            JPanel productsPanel = new JPanel();
+            productsPanel.setLayout(new BoxLayout(productsPanel, BoxLayout.Y_AXIS));
+
+            JScrollPane productsScrollPane = new JScrollPane(productsPanel);
+
+            rightPanel.add(productLabel, BorderLayout.NORTH);
+            rightPanel.add(productsScrollPane, BorderLayout.CENTER);
+
+            List<product> allProducts = getTop10ProductsBySales(productsByType);
+
+            // === Update product list when dropdown changes ===
+            categoryDropdown.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    String category = (String) categoryDropdown.getSelectedItem();
+                    if (category.equals("All Categories")) {
+                        updateProducts(productsPanel, allProducts);
+                    }
+                    else if (categoryIndex.containsKey(category)) {
+                        List<product> topProducts = productsByType.get(categoryIndex.get(category));
+                        updateProducts(productsPanel,topProducts);
+                    } else {
+                        updateProducts(productsPanel,Collections.emptyList());
+                    }
+                }
+            });
+
+            if (categoryDropdown.getItemCount() > 0) {
+                categoryDropdown.setSelectedIndex(0); // Auto-load first event if available
+            }
+
+            contentPanel.add(leftPanel);
+            contentPanel.add(rightPanel);
+            frame.add(contentPanel, BorderLayout.CENTER);
             JLabel titleLabel = new JLabel("Top 10 Products by Sales", SwingConstants.CENTER);
             titleLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
             titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
             frame.add(titleLabel, BorderLayout.NORTH);
 
-            DefaultListModel<String> listModel = new DefaultListModel<>();
-            for (int i = 0; i < top10.size(); i++) {
-                product p = top10.get(i);
-                String info = (i + 1) + ". " + p.getName() + " - $" + p.getPrice() + " - " + p.getTotalSales() + " sold";
-                listModel.addElement(info);
-            }
-
-            JList<String> productList = new JList<>(listModel);
-            productList.setFont(new Font("Monospaced", Font.PLAIN, 14));
-            JScrollPane scrollPane = new JScrollPane(productList);
-            frame.add(scrollPane, BorderLayout.CENTER);
-
             frame.setVisible(true);
+
+            JPanel topRightPanel = new JPanel();
+            topRightPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 20, 10));
+            topRightPanel.setBackground(Color.WHITE);
+
+            JButton homeBtn = new JButton("🏠 Home");
+            JButton viewAllTrends = new JButton("View All Trends");
+            homeBtn.setFocusPainted(false);
+            viewAllTrends.setFocusPainted(false);
+
+            topRightPanel.add(viewAllTrends);
+            topRightPanel.add(homeBtn);
+
+            frame.add(topRightPanel, BorderLayout.PAGE_START);
+            homeBtn.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    topShopsLayout.show(topShopsPanel, "Home");
+                }
+            });
+
+            viewAllTrends.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    String category = (String) categoryDropdown.getSelectedItem();
+                    if (category.equals("All Categories")) {
+                        ArrayList<product> topTen = new ArrayList<>(allProducts);
+                        productTrendUI.graph(topTen);
+                    } else if (categoryIndex.containsKey(category)) {
+                        ArrayList<product> topProducts = productsByType.get(categoryIndex.get(category));
+                        productTrendUI.graph(topProducts);
+                    }
+                }
+            });
+
+            return frame;
         }
     }
 
