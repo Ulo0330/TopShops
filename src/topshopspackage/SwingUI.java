@@ -6,16 +6,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collections;
 import java.util.List;
 
 
 import static topshopspackage.RecommendedByEvent.getTop10ByEvent;
-import static topshopspackage.filereader.getTop10ProductsBySales;
 import static topshopspackage.productTrend.calculateRegression;
 
 public class SwingUI {
@@ -41,6 +38,8 @@ public class SwingUI {
         MainPage.add(homePage(productsByType, categoryIndex, productsByCompany, companyIndex, productsByEvent, eventIndex,topShopsLayout, MainPage), "Home");
 
         MainPage.add(TopTenProductsUI.open(productsByType, categoryIndex, topShopsLayout, MainPage), "Top Ten Products");
+
+        MainPage.add(TopTenCompaniesUI.open(productsByType, topShopsLayout, MainPage), "Top Ten Companies");
 
         MainPage.add(EventRecommendationUI.open(productsByEvent, eventIndex, topShopsLayout, MainPage), "Event Recommendations");
         TopShops.add(MainPage);
@@ -82,7 +81,7 @@ public class SwingUI {
 
         JButton TopTenCompanyButton = new JButton("View Top Ten Companies");
         TopTenCompanyButton.addActionListener(e -> {
-
+            topShopsLayout.show(TopShopsPanel, "Top Ten Companies");
         });
         homePage.add(TopTenCompanyButton);
 
@@ -464,122 +463,232 @@ public class SwingUI {
         eventPanel.revalidate();
         eventPanel.repaint();
     }
+
+
+}
 // Daniel - Top Ten Products UI
-    public class TopTenProductsUI {
-        public static JPanel open(ArrayList<ArrayList<product>> productsByType, Map<String, Integer> categoryIndex, CardLayout topShopsLayout, JPanel topShopsPanel) {
-            JPanel frame = new JPanel();
-            frame.setLayout(new BorderLayout());
+class TopTenProductsUI {
+    public static JPanel open(ArrayList<ArrayList<product>> productsByType, Map<String, Integer> categoryIndex, CardLayout topShopsLayout, JPanel topShopsPanel) {
+        JPanel frame = new JPanel();
+        frame.setLayout(new BorderLayout());
 
-            JPanel contentPanel = new JPanel(new GridLayout(1, 2, 50, 0));
-            contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 50, 50));
-            contentPanel.setBackground(Color.WHITE);
-            //Left Panel (Dropdown Menu)
-            JPanel leftPanel = new JPanel();
-            leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-            leftPanel.setBackground(Color.WHITE);
+        JPanel contentPanel = new JPanel(new GridLayout(1, 2, 50, 0));
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 50, 50));
+        contentPanel.setBackground(Color.WHITE);
 
-            JLabel dropdownLabel = new JLabel("Product Categories", SwingConstants.CENTER);
-            dropdownLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
-            dropdownLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // Left Panel (Dropdown Menu)
+        JPanel leftPanel = new JPanel();
+        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+        leftPanel.setBackground(Color.WHITE);
 
-            List<String> categoryNames = new ArrayList<>(categoryIndex.keySet());
-            Collections.sort(categoryNames);
-            categoryNames.add(0, "All Categories");
-            JComboBox<String> categoryDropdown = new JComboBox<>(categoryNames.toArray(new String[0]));
-            categoryDropdown.setFont(new Font("SansSerif", Font.PLAIN, 12));
+        JLabel dropdownLabel = new JLabel("Product Categories", SwingConstants.CENTER);
+        dropdownLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
+        dropdownLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            categoryDropdown.setPreferredSize(new Dimension(150, 25));
-            categoryDropdown.setMaximumSize(new Dimension(150, 25));
-            categoryDropdown.setAlignmentX(Component.CENTER_ALIGNMENT);
+        List<String> categoryNames = new ArrayList<>(categoryIndex.keySet());
+        Collections.sort(categoryNames);
+        categoryNames.add(0, "All Categories");
+        JComboBox<String> categoryDropdown = new JComboBox<>(categoryNames.toArray(new String[0]));
+        categoryDropdown.setFont(new Font("SansSerif", Font.PLAIN, 12));
 
+        categoryDropdown.setPreferredSize(new Dimension(150, 25));
+        categoryDropdown.setMaximumSize(new Dimension(150, 25));
+        categoryDropdown.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            leftPanel.add(dropdownLabel);
-            leftPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-            leftPanel.add(categoryDropdown);
+        leftPanel.add(dropdownLabel);
+        leftPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        leftPanel.add(categoryDropdown);
 
-            // Right Panel (Products)
-            JPanel rightPanel = new JPanel(new BorderLayout(10, 10));
-            rightPanel.setBackground(Color.WHITE);
+        // Right Panel (Products)
+        JPanel rightPanel = new JPanel(new BorderLayout(10, 10));
+        rightPanel.setBackground(Color.WHITE);
 
-            JLabel productLabel = new JLabel("Products", SwingConstants.CENTER);
-            productLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
+        JLabel productLabel = new JLabel("Products", SwingConstants.CENTER);
+        productLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
 
-            JPanel productsPanel = new JPanel();
-            productsPanel.setLayout(new BoxLayout(productsPanel, BoxLayout.Y_AXIS));
+        JPanel productsPanel = new JPanel();
+        productsPanel.setLayout(new BoxLayout(productsPanel, BoxLayout.Y_AXIS));
 
-            JScrollPane productsScrollPane = new JScrollPane(productsPanel);
+        JScrollPane productsScrollPane = new JScrollPane(productsPanel);
 
-            rightPanel.add(productLabel, BorderLayout.NORTH);
-            rightPanel.add(productsScrollPane, BorderLayout.CENTER);
+        rightPanel.add(productLabel, BorderLayout.NORTH);
+        rightPanel.add(productsScrollPane, BorderLayout.CENTER);
 
-            List<product> allProducts = getTop10ProductsBySales(productsByType);
+        // Fetch top 10 products by total sales
+        List<product> allProducts = filereader.Top10Fetcher.fetchTop10ProductsBySales(productsByType);
 
-            // === Update product list when dropdown changes ===
-            categoryDropdown.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    String category = (String) categoryDropdown.getSelectedItem();
-                    if (category.equals("All Categories")) {
-                        updateProducts(productsPanel, allProducts);
-                    }
-                    else if (categoryIndex.containsKey(category)) {
-                        List<product> topProducts = productsByType.get(categoryIndex.get(category));
-                        updateProducts(productsPanel,topProducts);
-                    } else {
-                        updateProducts(productsPanel,Collections.emptyList());
-                    }
+        // Update product list when dropdown changes
+        categoryDropdown.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String category = (String) categoryDropdown.getSelectedItem();
+                if (category.equals("All Categories")) {
+                    updateProducts(productsPanel, allProducts);
                 }
-            });
-
-            if (categoryDropdown.getItemCount() > 0) {
-                categoryDropdown.setSelectedIndex(0); // Auto-load first event if available
+                else if (categoryIndex.containsKey(category)) {
+                    List<product> topProducts = productsByType.get(categoryIndex.get(category));
+                    updateProducts(productsPanel, topProducts);
+                } else {
+                    updateProducts(productsPanel, Collections.emptyList());
+                }
             }
+        });
 
-            contentPanel.add(leftPanel);
-            contentPanel.add(rightPanel);
-            frame.add(contentPanel, BorderLayout.CENTER);
-            JLabel titleLabel = new JLabel("Top 10 Products by Sales", SwingConstants.CENTER);
-            titleLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
-            titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-            frame.add(titleLabel, BorderLayout.NORTH);
-
-            frame.setVisible(true);
-
-            JPanel topRightPanel = new JPanel();
-            topRightPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 20, 10));
-            topRightPanel.setBackground(Color.WHITE);
-
-            JButton homeBtn = new JButton("🏠 Home");
-            JButton viewAllTrends = new JButton("View All Trends");
-            homeBtn.setFocusPainted(false);
-            viewAllTrends.setFocusPainted(false);
-
-            topRightPanel.add(viewAllTrends);
-            topRightPanel.add(homeBtn);
-
-            frame.add(topRightPanel, BorderLayout.PAGE_START);
-            homeBtn.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    topShopsLayout.show(topShopsPanel, "Home");
-                }
-            });
-
-            viewAllTrends.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    String category = (String) categoryDropdown.getSelectedItem();
-                    if (category.equals("All Categories")) {
-                        ArrayList<product> topTen = new ArrayList<>(allProducts);
-                        productTrendUI.graph(topTen);
-                    } else if (categoryIndex.containsKey(category)) {
-                        ArrayList<product> topProducts = productsByType.get(categoryIndex.get(category));
-                        productTrendUI.graph(topProducts);
-                    }
-                }
-            });
-
-            return frame;
+        if (categoryDropdown.getItemCount() > 0) {
+            categoryDropdown.setSelectedIndex(0); // Auto-load first event if available
         }
+
+        contentPanel.add(leftPanel);
+        contentPanel.add(rightPanel);
+        frame.add(contentPanel, BorderLayout.CENTER);
+
+        JLabel titleLabel = new JLabel("Top 10 Products by Sales", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        frame.add(titleLabel, BorderLayout.NORTH);
+
+        frame.setVisible(true);
+
+        JPanel topRightPanel = new JPanel();
+        topRightPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 20, 10));
+        topRightPanel.setBackground(Color.WHITE);
+
+        JButton homeBtn = new JButton("🏠 Home");
+        JButton viewAllTrends = new JButton("View All Trends");
+        homeBtn.setFocusPainted(false);
+        viewAllTrends.setFocusPainted(false);
+
+        topRightPanel.add(viewAllTrends);
+        topRightPanel.add(homeBtn);
+
+        frame.add(topRightPanel, BorderLayout.PAGE_START);
+        homeBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                topShopsLayout.show(topShopsPanel, "Home");
+            }
+        });
+
+        viewAllTrends.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String category = (String) categoryDropdown.getSelectedItem();
+                if (category.equals("All Categories")) {
+                    ArrayList<product> topTen = new ArrayList<>(allProducts);
+                    SwingUI.productTrendUI.graph(topTen);
+                } else if (categoryIndex.containsKey(category)) {
+                    ArrayList<product> topProducts = productsByType.get(categoryIndex.get(category));
+                    SwingUI.productTrendUI.graph(topProducts);
+                }
+            }
+        });
+
+        return frame;
     }
 
+    // Method to update the products list
+    private static void updateProducts(JPanel productsPanel, List<product> products) {
+        productsPanel.removeAll();
+
+        // Add the product names and units sold
+        for (product p : products) {
+            JPanel productPanel = new JPanel(new GridLayout(1, 2));
+            productPanel.setBackground(Color.WHITE);
+
+            JLabel productNameLabel = new JLabel(p.getName());
+            JLabel unitsSoldLabel = new JLabel(String.valueOf(p.getTotalSalesInt()));
+
+            productPanel.add(productNameLabel);
+            productPanel.add(unitsSoldLabel);
+
+            productsPanel.add(productPanel);
+        }
+
+        productsPanel.revalidate();
+        productsPanel.repaint();
+    }
+}
+
+class TopTenCompaniesUI {
+    public static JPanel open(ArrayList<ArrayList<product>> productsByType, CardLayout topShopsLayout, JPanel topShopsPanel) {
+        JPanel frame = new JPanel();
+        frame.setLayout(new BorderLayout());
+
+        JPanel contentPanel = new JPanel(new GridLayout(1, 1, 50, 0));
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 50, 50));
+        contentPanel.setBackground(Color.WHITE);
+
+        // Right Panel (Companies List)
+        JPanel rightPanel = new JPanel(new BorderLayout(10, 10));
+        rightPanel.setBackground(Color.WHITE);
+
+        JLabel companyLabel = new JLabel("Top 10 Companies", SwingConstants.CENTER);
+        companyLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
+
+        JPanel companiesPanel = new JPanel();
+        companiesPanel.setLayout(new BoxLayout(companiesPanel, BoxLayout.Y_AXIS));
+
+        JScrollPane companiesScrollPane = new JScrollPane(companiesPanel);
+
+        rightPanel.add(companyLabel, BorderLayout.NORTH);
+        rightPanel.add(companiesScrollPane, BorderLayout.CENTER);
+
+        // switch to // Top10Fetcher.fetchTop10CompaniesByMarketValue(productsByType)
+        List<product> allProducts = filereader.Top10Fetcher.fetchTop10ProductsBySales(productsByType);
 
 
+        // Initialize the list with the top 10 companies
+        updateCompanies(companiesPanel, allProducts);
+
+        contentPanel.add(rightPanel);
+        frame.add(contentPanel, BorderLayout.CENTER);
+
+        JLabel titleLabel = new JLabel("Top 10 Companies by Units Sold", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        frame.add(titleLabel, BorderLayout.NORTH);
+
+        frame.setVisible(true);
+
+        // Right side buttons (home and view all trends)
+        JPanel topRightPanel = new JPanel();
+        topRightPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 20, 10));
+        topRightPanel.setBackground(Color.WHITE);
+
+        JButton homeBtn = new JButton("🏠 Home");
+        homeBtn.setFocusPainted(false);
+
+
+        topRightPanel.add(homeBtn);
+
+        frame.add(topRightPanel, BorderLayout.PAGE_START);
+        homeBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                topShopsLayout.show(topShopsPanel, "Home");
+            }
+        });
+
+        return frame;
+    }
+
+    // Method to update the companies list
+    private static void updateCompanies(JPanel companiesPanel, List<product> products) {
+        companiesPanel.removeAll();
+
+        // Add company name and units sold to the list
+        for (product p : products) {
+            JPanel companyPanel = new JPanel(new GridLayout(1, 2));
+            companyPanel.setBackground(Color.WHITE);
+
+            // switch to // JLabel valueLabel = new JLabel(p.getMarketValue());
+            JLabel companyNameLabel = new JLabel(p.getCompany());
+            JLabel valueLabel= new JLabel(String.valueOf(p.getTotalSalesInt()));
+
+
+            companyPanel.add(companyNameLabel);
+            companyPanel.add(valueLabel);
+
+            companiesPanel.add(companyPanel);
+        }
+
+        companiesPanel.revalidate();
+        companiesPanel.repaint();
+    }
 }
