@@ -35,11 +35,11 @@ public class SwingUI {
         JPanel MainPage = new JPanel(topShopsLayout);
 
         //Initializing all panel types
-        MainPage.add(homePage(productsByType, categoryIndex, productsByCompany, companyIndex, productsByEvent, eventIndex,topShopsLayout, MainPage), "Home");
+        MainPage.add(homePage(topShopsLayout, MainPage), "Home");
 
         MainPage.add(TopTenProductsUI.open(productsByType, categoryIndex, topShopsLayout, MainPage), "Top Ten Products");
 
-        MainPage.add(TopTenCompaniesUI.open(productsByType, topShopsLayout, MainPage), "Top Ten Companies");
+        MainPage.add(TopTenProductsUI.TopTenCompaniesUI.open(productsByType, topShopsLayout, MainPage), "Top Ten Companies");
 
         MainPage.add(EventRecommendationUI.open(productsByEvent, eventIndex, topShopsLayout, MainPage), "Event Recommendations");
         TopShops.add(MainPage);
@@ -54,20 +54,32 @@ public class SwingUI {
      * File Description: Creates and returns a home page panel that will have labels and buttons to redirect
      * to Top Ten Products, Top Ten Companies, and Event Recommendations
      */
-    public static JPanel homePage(ArrayList<ArrayList<product>> productsByType, Map<String, Integer> categoryIndex,
-                                  ArrayList<ArrayList<product>> productsByCompany, Map<String, Integer> companyIndex, ArrayList<ArrayList<product>> productsByEvent
-            , Map<String, Integer> eventIndex, CardLayout topShopsLayout, JPanel TopShopsPanel) {
+    public static JPanel homePage(CardLayout topShopsLayout, JPanel TopShopsPanel) {
 
         JPanel homePage = new JPanel();
         // add label to view top ten products
 
         homePage.setLayout(new GridLayout(2, 3));
         homePage.setSize(100000, 100000);
-        JLabel TopTenLabel = new JLabel("View Top Ten Products");
-        JLabel TopTenCompanyLabel = new JLabel("View Top Ten Company");
-        JLabel EventLabel = new JLabel("View Event Recommendations");
-        homePage.add(TopTenCompanyLabel);
+
+        ImageIcon TopTen = new ImageIcon(SwingUI.class.getResource("logo.png"));
+        Image scaledImage =  TopTen.getImage().getScaledInstance(500, 500, Image.SCALE_SMOOTH);
+        ImageIcon TopTenIcon = new ImageIcon(scaledImage);
+
+        ImageIcon TopCompanies = new ImageIcon(SwingUI.class.getResource("Companies.png"));
+        Image scaledImage2 =  TopCompanies.getImage().getScaledInstance(500, 500, Image.SCALE_SMOOTH);
+        ImageIcon TopCompaniesIcon = new ImageIcon(scaledImage2);
+
+        ImageIcon Events = new ImageIcon(SwingUI.class.getResource("Events.png"));
+        Image scaledImage3 =  Events.getImage().getScaledInstance(500, 500, Image.SCALE_SMOOTH);
+        ImageIcon EventIcon = new ImageIcon(scaledImage3);
+
+        JLabel TopTenLabel = new JLabel(TopTenIcon);
+        JLabel TopTenCompanyLabel = new JLabel(TopCompaniesIcon);
+        JLabel EventLabel = new JLabel(EventIcon);
+
         homePage.add(TopTenLabel);
+        homePage.add(TopTenCompanyLabel);
         homePage.add(EventLabel);
 
 
@@ -411,8 +423,6 @@ public class SwingUI {
 
             JButton homeBtn = new JButton("🏠 Home");
             homeBtn.setFocusPainted(false);
-            JButton viewAllTrends = new JButton("View All Trends");
-            topRightPanel.add(viewAllTrends);
             topRightPanel.add(homeBtn);
 
             frame.add(topRightPanel, BorderLayout.PAGE_START);
@@ -426,13 +436,7 @@ public class SwingUI {
                 }
             });
 
-         viewAllTrends.addActionListener(new ActionListener() {
-             public void actionPerformed(ActionEvent e) {
-                 String event = (String) eventDropdown.getSelectedItem();
-                     ArrayList<product> topProducts = productsByEvent.get(eventIndex.get(event));
-                     productTrendUI.graph(topProducts);
-                 }
-         });
+
             frame.setVisible(true);
             return frame;
         }
@@ -522,13 +526,12 @@ class TopTenProductsUI {
             public void actionPerformed(ActionEvent e) {
                 String category = (String) categoryDropdown.getSelectedItem();
                 if (category.equals("All Categories")) {
-                    updateProducts(productsPanel, allProducts);
-                }
-                else if (categoryIndex.containsKey(category)) {
+                    SwingUI.updateProducts(productsPanel, allProducts);
+                } else if (categoryIndex.containsKey(category)) {
                     List<product> topProducts = productsByType.get(categoryIndex.get(category));
-                    updateProducts(productsPanel, topProducts);
+                    SwingUI.updateProducts(productsPanel, topProducts);
                 } else {
-                    updateProducts(productsPanel, Collections.emptyList());
+                    SwingUI.updateProducts(productsPanel, Collections.emptyList());
                 }
             }
         });
@@ -583,112 +586,114 @@ class TopTenProductsUI {
         return frame;
     }
 
-    // Method to update the products list
-    private static void updateProducts(JPanel productsPanel, List<product> products) {
-        productsPanel.removeAll();
+    /*
+        // Method to update the products list
+        private static void updateProducts(JPanel productsPanel, List<product> products) {
+            productsPanel.removeAll();
 
-        // Add the product names and units sold
-        for (product p : products) {
-            JPanel productPanel = new JPanel(new GridLayout(1, 2));
-            productPanel.setBackground(Color.WHITE);
+            // Add the product names and units sold
+            for (product p : products) {
+                JPanel productPanel = new JPanel(new GridLayout(1, 2));
+                productPanel.setBackground(Color.WHITE);
 
-            JLabel productNameLabel = new JLabel(p.getName());
-            JLabel unitsSoldLabel = new JLabel(String.valueOf(p.getTotalSalesInt()));
+                JLabel productNameLabel = new JLabel(p.getName());
+                JLabel unitsSoldLabel = new JLabel(String.valueOf(p.getTotalSalesInt()));
 
-            productPanel.add(productNameLabel);
-            productPanel.add(unitsSoldLabel);
+                productPanel.add(productNameLabel);
+                productPanel.add(unitsSoldLabel);
 
-            productsPanel.add(productPanel);
-        }
-
-        productsPanel.revalidate();
-        productsPanel.repaint();
-    }
-}
-
-class TopTenCompaniesUI {
-    public static JPanel open(ArrayList<ArrayList<product>> productsByType, CardLayout topShopsLayout, JPanel topShopsPanel) {
-        JPanel frame = new JPanel();
-        frame.setLayout(new BorderLayout());
-
-        JPanel contentPanel = new JPanel(new GridLayout(1, 1, 50, 0));
-        contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 50, 50));
-        contentPanel.setBackground(Color.WHITE);
-
-        // Right Panel (Companies List)
-        JPanel rightPanel = new JPanel(new BorderLayout(10, 10));
-        rightPanel.setBackground(Color.WHITE);
-
-        JLabel companyLabel = new JLabel("Top 10 Companies", SwingConstants.CENTER);
-        companyLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
-
-        JPanel companiesPanel = new JPanel();
-        companiesPanel.setLayout(new BoxLayout(companiesPanel, BoxLayout.Y_AXIS));
-
-        JScrollPane companiesScrollPane = new JScrollPane(companiesPanel);
-
-        rightPanel.add(companyLabel, BorderLayout.NORTH);
-        rightPanel.add(companiesScrollPane, BorderLayout.CENTER);
-
-        // switch to // Top10Fetcher.fetchTop10CompaniesByMarketValue(productsByType)
-        List<product> allProducts = filereader.Top10Fetcher.fetchTop10ProductsBySales(productsByType);
-
-
-        // Initialize the list with the top 10 companies
-        updateCompanies(companiesPanel, allProducts);
-
-        contentPanel.add(rightPanel);
-        frame.add(contentPanel, BorderLayout.CENTER);
-
-        JLabel titleLabel = new JLabel("Top 10 Companies by Units Sold", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
-        titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        frame.add(titleLabel, BorderLayout.NORTH);
-
-        frame.setVisible(true);
-
-        // Right side buttons (home and view all trends)
-        JPanel topRightPanel = new JPanel();
-        topRightPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 20, 10));
-        topRightPanel.setBackground(Color.WHITE);
-
-        JButton homeBtn = new JButton("🏠 Home");
-        homeBtn.setFocusPainted(false);
-
-
-        topRightPanel.add(homeBtn);
-
-        frame.add(topRightPanel, BorderLayout.PAGE_START);
-        homeBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                topShopsLayout.show(topShopsPanel, "Home");
+                productsPanel.add(productPanel);
             }
-        });
 
-        return frame;
+            productsPanel.revalidate();
+            productsPanel.repaint();
+        }
     }
+    */
+    static class TopTenCompaniesUI {
+        public static JPanel open(ArrayList<ArrayList<product>> productsByType, CardLayout topShopsLayout, JPanel topShopsPanel) {
+            JPanel frame = new JPanel();
+            frame.setLayout(new BorderLayout());
 
-    // Method to update the companies list
-    private static void updateCompanies(JPanel companiesPanel, List<product> products) {
-        companiesPanel.removeAll();
+            JPanel contentPanel = new JPanel(new GridLayout(1, 1, 50, 0));
+            contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 50, 50));
+            contentPanel.setBackground(Color.WHITE);
 
-        // Add company name and units sold to the list
-        for (product p : products) {
-            JPanel companyPanel = new JPanel(new GridLayout(1, 2));
-            companyPanel.setBackground(Color.WHITE);
+            // Right Panel (Companies List)
+            JPanel rightPanel = new JPanel(new BorderLayout(10, 10));
+            rightPanel.setBackground(Color.WHITE);
 
-            // switch to // JLabel valueLabel = new JLabel(p.getMarketValue());
-            JLabel companyNameLabel = new JLabel(p.getCompany());
-            JLabel valueLabel= new JLabel(String.valueOf(p.getTotalSalesInt()));
+            JLabel companyLabel = new JLabel("Top 10 Companies", SwingConstants.CENTER);
+            companyLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
+
+            JPanel companiesPanel = new JPanel();
+            companiesPanel.setLayout(new BoxLayout(companiesPanel, BoxLayout.Y_AXIS));
+
+            JScrollPane companiesScrollPane = new JScrollPane(companiesPanel);
+
+            rightPanel.add(companyLabel, BorderLayout.NORTH);
+            rightPanel.add(companiesScrollPane, BorderLayout.CENTER);
+
+            // switch to // Top10Fetcher.fetchTop10CompaniesByMarketValue(productsByType)
+            List<product> allProducts = filereader.Top10Fetcher.fetchTop10ProductsBySales(productsByType);
 
 
-            companyPanel.add(companyNameLabel);
-            companyPanel.add(valueLabel);
+            // Initialize the list with the top 10 companies
+            updateCompanies(companiesPanel, allProducts);
 
-            companiesPanel.add(companyPanel);
+            contentPanel.add(rightPanel);
+            frame.add(contentPanel, BorderLayout.CENTER);
+
+            JLabel titleLabel = new JLabel("Top 10 Companies by Units Sold", SwingConstants.CENTER);
+            titleLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
+            titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+            frame.add(titleLabel, BorderLayout.NORTH);
+
+            frame.setVisible(true);
+
+            // Right side buttons (home and view all trends)
+            JPanel topRightPanel = new JPanel();
+            topRightPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 20, 10));
+            topRightPanel.setBackground(Color.WHITE);
+
+            JButton homeBtn = new JButton("🏠 Home");
+            homeBtn.setFocusPainted(false);
+
+
+            topRightPanel.add(homeBtn);
+
+            frame.add(topRightPanel, BorderLayout.PAGE_START);
+            homeBtn.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    topShopsLayout.show(topShopsPanel, "Home");
+                }
+            });
+
+            return frame;
         }
 
-        companiesPanel.revalidate();
-        companiesPanel.repaint();
+        // Method to update the companies list
+        private static void updateCompanies(JPanel companiesPanel, List<product> products) {
+            companiesPanel.removeAll();
+
+            // Add company name and units sold to the list
+            for (product p : products) {
+                JPanel companyPanel = new JPanel(new GridLayout(1, 2));
+                companyPanel.setBackground(Color.WHITE);
+
+                // switch to // JLabel valueLabel = new JLabel(p.getMarketValue());
+                JLabel companyNameLabel = new JLabel(p.getCompany());
+                JLabel valueLabel = new JLabel(String.valueOf(p.getTotalSalesInt()));
+
+
+                companyPanel.add(companyNameLabel);
+                companyPanel.add(valueLabel);
+
+                companiesPanel.add(companyPanel);
+            }
+
+            companiesPanel.revalidate();
+            companiesPanel.repaint();
+        }
     }
 }

@@ -3,65 +3,43 @@ package topshopspackage;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.*;
+
 import java.util.*;
 
 public class filereader {
+
     public static void fileReader(ArrayList<ArrayList<product>> productsByType, Map<String, Integer> categoryIndex,
                                   ArrayList<ArrayList<product>> productsByCompany, Map<String, Integer> companyIndex,
                                   ArrayList<ArrayList<product>> productsByEvent, Map<String, Integer> eventIndex) {
 
-        String url = "jdbc:mysql://144.37.209.4:3306/topshops";
-        String user = "root";
-        String password = "Ulyses2004";  // Replace this with your actual password
+        ProductDAO productDAO = new ProductDAO();
+        List<product> products = productDAO.getAllProducts();
 
-        try (Connection conn = DriverManager.getConnection(url, user, password)) {
-            String query = "SELECT * FROM products";
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
+        for (product temp : products) {
+            String type = temp.getType();
+            String company = temp.getCompany();
+            String event = temp.getEvent();
 
-            while (rs.next()) {
-                product temp = new product();
-                String type = rs.getString("type");
-                String company = rs.getString("company");
-                String event = rs.getString("event");
+            // Organize by Type
+            categoryIndex.computeIfAbsent(type, k -> {
+                productsByType.add(new ArrayList<>());
+                return productsByType.size() - 1;
+            });
+            productsByType.get(categoryIndex.get(type)).add(temp);
 
-                temp.setName(rs.getString("name"));
-                temp.setPrice(String.valueOf(rs.getDouble("price")));
-                temp.setCompany(company);
-                temp.setType(type);
-                temp.setEvent(event);
-                temp.setTotalSales(String.valueOf(rs.getInt("totalSales")));
-                temp.setSalesBy7(rs.getString("salesBy8"));
-                temp.setMarketValue(rs.getString("marketValue"));
+            // Organize by Company
+            companyIndex.computeIfAbsent(company, k -> {
+                productsByCompany.add(new ArrayList<>());
+                return productsByCompany.size() - 1;
+            });
+            productsByCompany.get(companyIndex.get(company)).add(temp);
 
-                // Organize by Type
-                if (!categoryIndex.containsKey(type)) {
-                    categoryIndex.put(type, productsByType.size());
-                    productsByType.add(new ArrayList<>());
-                }
-                productsByType.get(categoryIndex.get(type)).add(temp);
-
-                // Organize by Company
-                if (!companyIndex.containsKey(company)) {
-                    companyIndex.put(company, productsByCompany.size());
-                    productsByCompany.add(new ArrayList<>());
-                }
-                productsByCompany.get(companyIndex.get(company)).add(temp);
-
-                // Organize by Event
-                if (!eventIndex.containsKey(event)) {
-                    eventIndex.put(event, productsByEvent.size());
-                    productsByEvent.add(new ArrayList<>());
-                }
-                productsByEvent.get(eventIndex.get(event)).add(temp);
-            }
-
-            rs.close();
-            stmt.close();
-
-        } catch (SQLException e) {
-            System.out.println("Database error: " + e.getMessage());
+            // Organize by Event
+            eventIndex.computeIfAbsent(event, k -> {
+                productsByEvent.add(new ArrayList<>());
+                return productsByEvent.size() - 1;
+            });
+            productsByEvent.get(eventIndex.get(event)).add(temp);
         }
     }
 
@@ -141,6 +119,7 @@ public class filereader {
 
             for (List<product> group : groupedProducts) {
                 allProducts.addAll(group);
+                group.sort((p1, p2) ->Integer.compare(p2.getTotalSalesInt(), p1.getTotalSalesInt()));
             }
 
             allProducts.sort((p1, p2) -> Integer.compare(p2.getTotalSalesInt(), p1.getTotalSalesInt()));
