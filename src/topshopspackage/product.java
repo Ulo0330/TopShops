@@ -1,7 +1,7 @@
 package topshopspackage;
 
 public class product {
-    private String name, price, company, type, event, totalSales, salesBy7;
+    private String name, price, company, type, event, totalSales, salesBy7, marketValue;
 
     public product() {}
 
@@ -13,6 +13,7 @@ public class product {
     public String getEvent() {return event;}
     public String getTotalSales() {return totalSales;}
     public String getSalesBy7() {return salesBy7;}
+    public String getMarketValue() {return marketValue;}
 
     //setters
     public void setName(String name) {this.name = name;}
@@ -22,15 +23,23 @@ public class product {
     public void setEvent(String event) {this.event = event;}
     public void setTotalSales(String totalSales) {this.totalSales = totalSales;}
     public void setSalesBy7(String salesBy7) {this.salesBy7 = salesBy7;}
+    public void setMarketValue(String marketValue) {this.marketValue = marketValue;}
 
     //
-    public void printProducts() {
-
-    }
-
     public int getTotalSalesInt() {
         try {
             return Integer.parseInt(this.totalSales);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
+    public long getMarketValueLong() {
+        if (marketValue == null) return 0;
+        try {
+            // Remove any non-digit characters (e.g., "$", ",", spaces)
+            String cleaned = marketValue.replaceAll("[^\\d]", "");
+            return cleaned.isEmpty() ? 0 : Long.parseLong(cleaned);
         } catch (NumberFormatException e) {
             return 0;
         }
