@@ -22,7 +22,7 @@ public class TopShops {
         ArrayList<ArrayList<product>> productsByEvent = new ArrayList<>();
 
         // Read from MySQL database
-
+        // Test
         fileReader(productsByType, categoryIndex, productsByCompany, companyIndex, productsByEvent, eventIndex);
 
         // Start the GUI
