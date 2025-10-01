@@ -18,3 +18,8 @@ Efficiency: Automates product research, reducing time spent on market analysis a
 User-Friendly Interface: Presents insights in a clear, accessible format.
 
 Top Shops helps businesses stay ahead in a rapidly evolving market landscape by combining analytics, recommendations, and visualization.
+
+## Tech Stack
+- **Language:** Java
+- **Database:** MySQL
+- **Frontend/UI:** JavaSwing
