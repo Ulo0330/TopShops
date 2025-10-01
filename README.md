@@ -1,4 +1,20 @@
 # TopShops
 CS370 - project
 
-Top Shops will leverage real-time data to identify trending products, allowing businesses to make informed decisions quickly. The primary goal of the software is to identify and display the top ten products ranked by popularity based on sales data while presenting real-time statistics such as daily popularity trends, average revenue, and historical top-selling products. Secondary goals include identifying and displaying the top companies, recommending products for events, and giving product analysis and trends. By automating the product research process, the software will reduce time spent on market analysis and increase the likelihood of selecting profitable items. This solution will not only enhance efficiency but also give businesses a competitive edge. With a user-friendly interface that presents information in a rich text format, Top Shops ensures that businesses stay ahead in the rapidly evolving market landscape.
+Overview:
+
+Top Shops is a software tool designed to help businesses identify trending products and make informed decisions quickly.
+
+Key Features
+
+Top 10 Products: Displayed by popularity based on sales data.
+
+Real-Time Stats: Daily popularity trends, average revenue, and historical top-sellers.
+
+Market Insights: Identify top companies, recommend products for events, and provide product analysis.
+
+Efficiency: Automates product research, reducing time spent on market analysis and increasing the likelihood of selecting profitable items.
+
+User-Friendly Interface: Presents insights in a clear, accessible format.
+
+Top Shops helps businesses stay ahead in a rapidly evolving market landscape by combining analytics, recommendations, and visualization.
